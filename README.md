@@ -1,14 +1,18 @@
 # Intro
 
-Policing has become an increasingly divisive issue over the past few years in American public discourse.  The seemingly unending high-profile police shootings of unarmed black men, such as Michael Brown, Tamir Rice, Anton Sterling, and Philando Castile, have catalyzed massive protests against what is seen as a systemic, and often violent, targeting of people-of-color by police forces across the country.  On the other side of the political spectrum, a common belief is that the unbalanced police targeting of non-white citizens is a myth created by the mainstream media based on a handful of extreme cases that are not representative of the national norm.
+Policing has become an increasingly divisive issue over the past few years in American public discourse.
 
-In June 2017, a team of researchers at Stanford University collected and released an open-source dataset of 60 million state patrol stops from 20 states across the US.  In this tutorial, we walk through how analyze and visualize this data using Python, and we'll work to cut through the political smoke-screens in order to quantitatively determine the existence of systemic racially driven policing bias.
+The seemingly unending high-profile police shootings of unarmed black men (such as Michael Brown, Tamir Rice, Anton Sterling, and Philando Castile) have catalyzed massive protests against what is seen as a systemic, and often violent, targeting of people-of-color by police forces across the country.
 
-The tutorial and analysis would not be possible without the groundwork put into place by "The Standford Open Policing Project".  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  A short tutorial for working with the data using the R programming language is provided on the official project website.  The goal of this tutorial is not to present a groundbreaking or original analysis of the dataset; the main intention is to provide you with the tools and foundation to dive even deeper into the data on your own.
+On the other side of the political spectrum, a common belief is that the unbalanced police targeting of non-white citizens is a myth created by the mainstream media based on a handful of extreme cases that are not representative of the national norm.
+
+In June 2017, a team of researchers at Stanford University collected and released an open-source data set of 60 million state police patrol stops from 20 states across the US.  In this tutorial, we walk through how analyze and visualize this data using Python, and we'll work to cut through the political smoke-screens in order to quantitatively determine the existence of systemic racially driven policing bias.
+
+The tutorial and analysis would not be possible without the groundwork put into place by "The Standford Open Policing Project".  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  A short tutorial for working with the data using the R programming language is provided on the official project website.  The goal of this tutorial is not to present a groundbreaking or original analysis of the dataset; the intention primarily is to provide you with the tools and foundation to dive even deeper into the data on your own.
 
 # The Data
 
-In the United States, there are, on average, more than 50,000 traffic stops every day.  The potential number of data points for each stop is huge, from the demographics (age, race, gender) of the driver, to the location, time of day, stop reason, stop outcome, car model, and much more.  Unfortunately, not every state makes this annomyzed data available, and those that do often have different reporting standards for what information is recorded.  Even different counties and districts in each state can be inconsistant with how each traffic stop is recorded.  The research team at Stanford has managed to gather traffic-stop data from twenty states, and has worked to regularize the reporting standards for 11 fields.
+In the United States, there are, on average, more than 50,000 traffic stops every day.  The potential number of data points for each stop is huge, from the demographics (age, race, gender) of the driver, to the location, time of day, stop reason, stop outcome, car model, and much more.  Unfortunately, not every state makes this data available, and those that do often have different reporting standards for what information is recorded.  Even different counties and districts within each state can be inconstant in how each traffic stop is recorded.  The research team at Stanford has managed to gather traffic-stop data from twenty states, and has worked to regularize the reporting standards for 11 fields.
 
 - Stop Date
 - Stop Time
@@ -22,15 +26,15 @@ In the United States, there are, on average, more than 50,000 traffic stops ever
 - Contraband Found
 - Stop Outcome
 
-Most states do not have data available for every field, but there is enough overlap between the data sets to provide a foundation for some very interesting analysis.
+Most states do not have data available for every field, but there is enough overlap between the data sets to provide a solid foundation for some very interesting analysis.
 
 # 0 - Getting Started
 
 We'll start with analyzing the data set for Vermont.  We're looking at Vermont first for a few reasons.
 
-1. The Vermont dataset is small enough to be manageble, at only 283,285	traffic stops (compared to the Texas dataset for instance, which contains data on almost 24 million stops).
+1. The Vermont dataset is small enough to be very manageable, at only 283,285 traffic stops (compared to the Texas data set, for instance, which contains records on almost 24 million stops).
 2. There is not much missing data, as all eleven fields mentioned above are covered.
-3. Vermont is 94% white, but is also in a part of the country known for being fairly liberal (disclaimer - I grew up in the Boston area, and I've spent a quite a bit of time in Vermont).  Many in this area consider their state very progressive and would like to believe that their local institutions are not terribly prone to systemic racism.  It will be interesting to determine if the data reflects this view.
+3. Vermont is 94% white, but is also in a part of the country known for being fairly liberal (disclaimer - I grew up in the Boston area, and I've spent a quite a bit of time in Vermont).  Many in this area consider their state very progressive and would like to believe that their state institutions are not terribly prone to systemic racism.  It will be interesting to determine if the data validates this view.
 
 ### 0.0 - Download Datset
 
@@ -42,7 +46,7 @@ Create a new directory for the project, say `police-data-analysis`, and move the
 
 ### 0.2 - Optional: Create new virtualenv (or Anaconda) environment
 
-If you want to keep your Python dependencies neat and seperated between project, now would be the time to create and activate a new environment for this analysis, using either virtualenv or Anaconda.
+If you want to keep your Python dependencies neat and separated between projects, now would be the time to create and activate a new environment for this analysis, using either virtualenv or Anaconda.
 
 I'm not going to go into detail about how to do this, if you want to learn more check out the tutorials here.
 virtualenv - LINK
@@ -87,13 +91,13 @@ py.init_notebook_mode(connected=True)
 
 ### 0.6 - Load Dataset
 
-In the next cell, load Vermont police stop dataset into a Pandas dataframe.
+In the next cell, load Vermont police stop data set into a Pandas dataframe.
 
 ```python
 df_vt = pd.read_csv('./data/VT-clean.csv.gz', compression='gzip', low_memory=False)
 ```
 
-> This command assumes that you are storing the dataset in the `data` directory of the project.  If you are not, you can adjust the data file path accordingly.
+> This command assumes that you are storing the data set in the `data` directory of the project.  If you are not, you can adjust the data file path accordingly.
 
 # 1 - Vermont Police Data Exploration
 
@@ -101,7 +105,7 @@ Now begins the fun part.
 
 ### 1.0 - Preview the Available Data
 
-We can get a quick preview of the first ten rows of the dataset with the `head()` method.
+We can get a quick preview of the first ten rows of the data set with the `head()` method.
 
 ```python
 df_vt.head()
@@ -126,7 +130,7 @@ Index(['id', 'state', 'stop_date', 'stop_time', 'location_raw', 'county_name',
 ```
 
 ### 1.1 - Stops By County
-Let's get a list of each county in the dataset, along with how many traffic stops happened in each.
+Let's get a list of each county in the data set, along with how many traffic stops happened in each.
 
 ```python
 df_vt['county_name'].value_counts()
@@ -150,7 +154,7 @@ Grand Isle County      538
 Name: county_name, dtype: int64
 ```
 
-If you're familiar with Vermont's geography, you'll notice that the police stop seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusets, and New York state.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
+If you're familiar with Vermont's geography, you'll notice that the police stops seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusetts, and New York state.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
 
 https://public.tableau.com/views/VtPoliceStops/Sheet1?:embed=y&:display_count=yes&publish=yes
 
@@ -171,6 +175,7 @@ Name: driver_gender, dtype: int64
 We can see that approximately 30% of the stops are of women drivers, and 70% are of men.
 
 ### 1.3 - Stops By Race
+
 Let's also examine the distribution by race.
 
 ```python
@@ -276,7 +281,7 @@ dtype: int64
 
 ### 1.6 - Police Stop Frequency by Race and Age
 
-It would be more interesting to see how the freqency of police stops breaks down by both race and age.
+It would be more interesting to see how the frequency of police stops breaks down by both race and age.
 
 ```python
 fig, ax = plt.subplots()
@@ -289,7 +294,7 @@ ax.legend()
 
 < insert chart>
 
-We can see that young drivers in there late teens and early twenties are the most likely to be pulled over.  Between ages 25 and 35, the stop rate of each demographic drops off quickly, but more interesting is that it plateaus, and even rises a bit for white drivers between the ages of 35 and 50, whereas for other races it continues to drop steadily.
+We can see that young drivers in their late teens and early twenties are the most likely to be pulled over.  Between ages 25 and 35, the stop rate of each demographic drops off quickly. The most interesting disparity is that it plateaus, and even rises a bit for white drivers between the ages of 35 and 50, whereas for other races it continues to drop steadily.
 
 # 2 - Search Outcome Analysis
 
@@ -303,13 +308,13 @@ In the analysis by the "Standford Open Policing Project", they use these two fie
 
 Becker proposed looking at search outcomes. If officers don’t discriminate, he argued, they should find contraband — like illegal drugs or weapons — on searched minorities at the same rate as on searched whites. If searches of minorities turn up contraband at lower rates than searches of whites, the outcome test suggests officers are applying a double standard, searching minorities on the basis of less evidence." - https://openpolicing.stanford.edu/findings/
 
-We'll now use the available data to perform our own outcome test, to determine whether minorities in Vermont were searched "on the basis of less evidence" than white drivers.
+We'll now use the available data to perform our own outcome test, to determine whether minorities in Vermont are searched on the basis of less evidence than white drivers.
 
 ### 2.0 - Compute Search Rate and Hit Rate
 
 We'll define a new function to compute the search rate and hit rate for the traffic stops in our dataframe.
 
-- Search Rate - The rate at which a traffic stop results in a search.  I.e. a search rate of `0.20` would signify that out of 100 traffic stops, 20 would result in a search on average.
+- Search Rate - The rate at which a traffic stop results in a search.  I.e. a search rate of `0.20` would signify that out of 100 traffic stops, 20 resulted in a search on average.
 - Hit Rate - The rate at which contraband is found in a search. I.e. a hit rate of `0.80` would signify that out of 100 searches, 80 searches resulted in contraband (drugs, unregistered weapons, etc.) being found.
 
 ```python
@@ -341,7 +346,7 @@ def compute_hit_rate(df):
 
 ### 2.1 - Compute Search Stats For Entire Dataset
 
-We can test out our new function to determine the search rate and hit rate for the whole state.
+We can test our new function to determine the search rate and hit rate for the entire state.
 
 ```python
 compute_search_stats(df_vt)
@@ -361,7 +366,7 @@ df_vt.groupby('driver_gender').apply(compute_search_stats)
 
 < insert chart >
 
-We can see here that, men are about three times as likely to be searched as women, but that for each gender the same standard of evidence is used, since roughly 80% of searches for both result in contraband being found.  The implication here is men are searched and caught with contraband more often than women, but that there is not any gender discrimination in deciding who to search.
+We can see here that men are about three times as likely to be searched as women, but that for each gender the same standard of evidence is used, since roughly 80% of searches for both result in contraband being found.  The implication here is men are searched and caught with contraband more often than women, but that there is no discernable gender discrimination in deciding who to search.
 
 ### 2.3 - Compare Search Stats By Age
 
@@ -374,9 +379,9 @@ df_vt.groupby(age_groups).apply(compute_search_stats)
 
 < insert chart >
 
-We can see here that, as we observed prior, the search rate steadily declines as drivers get older.  What is more interesting, however, is that he hit rate also declines rapidly older drivers.  What this means is that older drivers are searched less often, and searches on older drivers generally turn up contraband more rarely.
+We can see here that, as we observed prior, the search rate steadily declines as drivers get older.  What is more interesting, however, is that the hit rate also declines rapidly older drivers.  What this means is that older drivers are searched less often, and searches on older drivers generally turn up contraband more rarely.
 
-It's worth noting that the sample sizes (`n_hits`, `n_searches`, and `n_stops`) also decrease steadily through the age brackets, so the numbers with smaller sample sizes are less precise and much more volatile.  This drop in sample size probably explains why the hit rate on individuals aged 55-60 are much higher than in the neighboring age brackets (I also would like to imagine that this could be a reflection of the midlife crisis hippy crowd who retire to Vermont in a psychedelic VW minibus packed with the "Grateful Dead" discography and a pound of dope).
+It's worth noting that the sample sizes (`n_hits`, `n_searches`, and `n_stops`) also decrease steadily through the age brackets, resulting in values that are less precise and much more volatile.  This drop in sample size probably explains why the hit rates on individuals aged 55-60 are much higher than in the neighboring age brackets (I also would like to imagine that this could be a reflection of the midlife crisis hippy crowd who retire to Vermont in a psychedelic VW minibus packed with the "Grateful Dead" discography and a pound of dope).
 
 ### 2.4 - Compare Search Stats By Race
 
@@ -390,9 +395,11 @@ df_vt.groupby('driver_race').apply(compute_search_stats)
 
 Black and hispanic drivers are searched at higher rates than white drivers (5% and 4% of traffic stops respectively, versus 1% for white drivers), but the searches of these drivers only yield contraband 60-70% of the time, compared to 80% of the time for white drivers.
 
+Translation - Black drivers are 500% more likely to be searched than white drivers during a traffic stop, but are 20% less likely to be caught with contraband in the event of a search.
+
 ### 2.5 - Compare Search Stats By Race and Location
 
-Let's add in location as another factor.  It's possible that some counties (such as those were oppiod trafficing is prevalent) have a much higher search rate / lower hit rates for both white and non-white drivers, leading to distortion in the overall stats.  By controlling for location, we can determine if this is the case.
+Let's add in location as another factor.  It's possible that some counties (such as those were opiod trafficing is prevalent) have a much higher search rate / lower hit rates for both white and non-white drivers, leading to distortion in the overall stats.  By controlling for location, we can determine if this is the case.
 
 We'll define a new function to generate the visualization.
 ```python
@@ -419,14 +426,14 @@ Each dot in the above chart represents a county.  You'll notice that only one co
 
 **In the above visualization, we can see a clear pattern of discrimination in traffic stop searches.**
 
-The search rates and hit rates for white drivers in most counties are quite consistantly clustered around 80% and 1% respectively.  We can see, however, that nearly every county searches black and hispanic drivers at a higher rate, and that these search uniformally have a lower hit rate than those on white drivers.
+The search rates and hit rates for white drivers in most counties are quite consistently clustered around 80% and 1% respectively.  We can see, however, that nearly every county searches black and hispanic drivers at a higher rate, and that these searches uniformally have a lower hit rate than those on white drivers.
 
 This state-wide pattern of a higher search rate combined with a lower hit rate suggests that a lower standard of evidence is used when deciding to search black and hispanic drivers compared to when searching white drivers.
 
 # 3 - Analyzing Other States
 
 ### 3.0 - Massachuesstts
-Let's now perform the same analysis on my home state, Massachuestts.  This time we'll have a bit more data to work with - roughly 3.4 million traffic stops.
+Let's now perform the same analysis on my home state, Massachusetts.  This time we'll have a bit more data to work with - roughly 3.4 million traffic stops.
 
 Download the dataset to your project's `/data` directory - https://stacks.stanford.edu/file/druid:py883nd2578/MA-clean.csv.gz
 
@@ -481,13 +488,13 @@ df_wi.groupby('driver_race').apply(compute_search_stats)
 
 < insert table >
 
-The trends here should be begining to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at the same rate as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely on average to yield contraband than searches on white drivers.
+The trends here should be starting to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at the same rate as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely on average to yield contraband than searches on white drivers.
 
 We'll visualize the same result, by county, in our scatterplot.
 
 < insert chart >
 
-Starting to look familiar?  We can see in the chart bellow that the standard of evidence for searching non-white drivers is higher in virtually every county than for white drivers.  In one outlying county, almost 25% (!) of traffic stops for black drivers resulted in a search, even though only 50% of those searches yield contraband.
+Starting to look familiar?  We can see in the chart bellow that the standard of evidence for searching non-white drivers is higher in virtually every county than for white drivers.  In one outlying county, almost 25% (!) of traffic stops for black drivers resulted in a search, even though only 50% of those searches yielded contraband.
 
 You've heard the phrase "A picture is worth a thousand words"?  This is one of those pictures - and the name of the picture is "Systemic Racism".
 
@@ -495,19 +502,19 @@ You've heard the phrase "A picture is worth a thousand words"?  This is one of t
 
 Does this mean we shouldnt support our police departments? Does it mean that most police officers are overtly racist?  **Certainly not.**
 
-Does it mean that in the United States, non-white citizens are uniformly searched with a lower standard of evidence than white citizens, implying a degree of racial bias at the institutional level?  **Yes**.
+Does it mean that in the United States, non-white citizens are uniformly searched with a lower standard of evidence than white citizens?  **Yes**.
 
 Regardless of political views, I think everyone can agree that *facts are paramount to idealogy* in making laws and setting policy.  These numbers don't lie - this data was sourced directly from the state police departments, and the examples that we've gone over here have not been cherry picked to make any political point: these trends are apparent across the entire dataset of 60 million police stops.  To see the full analysis for all 20 available states, check out the official findings here - https://5harad.com/papers/traffic-stops.pdf.
 
 [ include extra stats from the official findings - ticket rates, tail lights, marajuana ]
 
-Whatever your views may be on the divisive social and political issues that have enveloped our country over the past few years, I think it's important to take a step back, and to look objectively at what is shown by the data.  I'm not suggesting any solutions here, that's really not the point of this blog post, but I sincerely believe that sensibly acknowledging the problem across political lines is the first step to any sustainable long-term progress.
+Whatever your views may be on the divisive social and political issues that have enveloped our country over the past few years, I think it's important to take a step back and to look objectively at what is shown by the data.  I'm not suggesting any solutions here, that's really not the point of this blog post, but I sincerely believe that sensibly acknowledging the problem across political lines is the first step to any sustainable long-term progress.
 
-I hope that this tutorial has provided the tools you might need to take the analasys further.  There's a *lot* more that you can do with the data than what we've covered here.
+I hope that this tutorial has provided the tools you might need to take the analysis further.  There's a *lot* more that you can do with the data than what we've covered here.
 
 - Analyze police stops for your home state and county (if the data is available).
-- Expand the analysis to include other factors in the dataset, such as `Stop Reason` and `Search Type`.  The datasets for some states have lots of additional fields available as well, such as whether the stop was drug related, whether the driver was from out-of-state, and detailed information on the year, make, and model of the car.
-- Combine your analysis with US census data on the demographic, economic, and crime data about each county.
+- Expand the analysis to include other factors in the dataset, such as `Stop Reason` and `Search Type`.  The data sets for some states have lots of additional fields available as well, such as whether the stop was drug related, whether the driver was from out-of-state, and metadata covering the year, make, and model of the car.
+- Combine your analysis with US census data on the demographic, social, and economic data about each county.
 - Create a web app to display the county trends on an interactive map.
 - Build a mobile app to warn drivers when they're entering a county that seems to be more distrusting of drivers of a certain race.
 - Open-source your own analysis, spread your findings, seek out peer review, maybe even write an explanatory blog post.
