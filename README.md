@@ -8,6 +8,8 @@ On the other side of the political spectrum, a common belief is that the unbalan
 
 In June 2017, a team of researchers at Stanford University collected and released an open-source data set of 60 million state police patrol stops from 20 states across the US.  In this tutorial, we walk through how analyze and visualize this data using Python, and we'll work to cut through the political smoke-screens in order to quantitatively determine the existence of systemic racially driven policing bias.
 
+< show chart >
+
 The tutorial and analysis would not be possible without the groundwork put into place by "The Standford Open Policing Project".  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  A short tutorial for working with the data using the R programming language is provided on the official project website.  The goal of this tutorial is not to present a groundbreaking or original analysis of the dataset; the intention primarily is to provide you with the tools and foundation to dive even deeper into the data on your own.
 
 # The Data
@@ -58,7 +60,7 @@ We'll need to install a few Python packages to perform our analysis.
 
 On the command line, run the following to install the required libraries.
 ```bash
-pip install numpy pandas matplotlib jupyter plotly
+pip install numpy pandas matplotlib jupyter
 ```
 
 > If you're using Anaconda, you can replace the `pip` command here with `conda`.
@@ -82,11 +84,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
-
-import plotly.offline as py
-import plotly.graph_objs as go
-import plotly.figure_factory as ff
-py.init_notebook_mode(connected=True)
 ```
 
 ### 0.6 - Load Dataset
@@ -129,73 +126,8 @@ Index(['id', 'state', 'stop_date', 'stop_time', 'location_raw', 'county_name',
       dtype='object')
 ```
 
-### 1.1 - Stops By County
-Let's get a list of each county in the data set, along with how many traffic stops happened in each.
 
-```python
-df_vt['county_name'].value_counts()
-```
-
-```text
-Windham County       38160
-Windsor County       37096
-Chittenden County    26571
-Washington County    25974
-Orange County        25463
-Rutland County       23940
-Addison County       23756
-Bennington County    22651
-Franklin County      20184
-Caledonia County     17177
-Orleans County       10617
-Lamoille County       9094
-Essex County          1359
-Grand Isle County      538
-Name: county_name, dtype: int64
-```
-
-If you're familiar with Vermont's geography, you'll notice that the police stops seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusetts, and New York state.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
-
-https://public.tableau.com/views/VtPoliceStops/Sheet1?:embed=y&:display_count=yes&publish=yes
-
-
-### 1.2 - Stops By Gender
-We can also break down the traffic stops by gender.
-
-```python
-df_vt['driver_gender'].value_counts()
-```
-
-```text
-M    179678
-F    101895
-Name: driver_gender, dtype: int64
-```
-
-We can see that approximately 30% of the stops are of women drivers, and 70% are of men.
-
-### 1.3 - Stops By Race
-
-Let's also examine the distribution by race.
-
-```python
-df_vt['driver_race'].value_counts()
-```
-
-```text
-White       266216
-Black         5741
-Asian         3607
-Hispanic      2625
-Other          279
-Name: driver_race, dtype: int64
-```
-
-Most traffic stops are of white drivers, which is expected since Vermont is around 94% white (which makes it the 2nd-least diverse state in the nation, behind Maine).  Since white drivers make up approximately 94% of the traffic stops, it would appear that the there is no observable statewide bias for pulling over non-white drivers vs. white drivers.
-
-We're far from done, however.  Let's keep on analyzing the data to see what else we can learn.
-
-### 1.4 - Drop Missing Values
+### 1.1 - Drop Missing Values
 
 Let's do a quick count of each column to see if we're missing much data.
 
@@ -276,10 +208,99 @@ officer_id               273181
 dtype: int64
 ```
 
+### 1.2 - Stops By County
+Let's get a list of each county in the data set, along with how many traffic stops happened in each.
 
-### 1.5 - Police Stop Frequency By Age
+```python
+df_vt['county_name'].value_counts()
+```
 
-### 1.6 - Police Stop Frequency by Race and Age
+```text
+Windham County       37715
+Windsor County       36464
+Chittenden County    24815
+Orange County        24679
+Washington County    24633
+Rutland County       22885
+Addison County       22813
+Bennington County    22250
+Franklin County      19715
+Caledonia County     16505
+Orleans County       10344
+Lamoille County       8604
+Essex County          1239
+Grand Isle County      520
+Name: county_name, dtype: int64
+```
+
+If you're familiar with Vermont's geography, you'll notice that the police stops seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusetts, and New York state.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
+
+https://public.tableau.com/views/VtPoliceStops/Sheet1?:embed=y&:display_count=yes&publish=yes
+
+### 1.3 - Violations
+
+We can also just as easily check out the distribution of traffic stop reasons.
+
+```python
+df_vt['violation_raw'].value_counts()
+```
+
+```text
+Moving Violation              212100
+Vehicle Equipment              50600
+Externally Generated Stop       6160
+Investigatory Stop              3608
+Suspicion of DWI                 711
+(Winooski) Mtr Vhc Vltn            1
+(Winooski) Be On Look Rqst         1
+Name: violation_raw, dtype: int64
+```
+
+Unsurprisingly, the top reason for a traffic stop is "Moving Violation" (speeding, reckless driving, etc.), followed by "Vehicle Equipment" (faulty lights, illegal modifications, etc.)  "Externally Generated Stop" and "Investigatory Stop" are both driven not by any fault in the driving behavior or vehicle, but on other information available to the officer.  "Suspicion of DWI" (driving while intoxicated) is surprisingly the least prevalent, with only 711
+
+### 1.4 - Outcomes
+
+```python
+df_vt['stop_outcome'].value_counts()
+```
+
+### 1.5 - Stops By Gender
+We can also break down the traffic stops by gender.
+
+```python
+df_vt['driver_gender'].value_counts()
+```
+
+```text
+M    179678
+F    101895
+Name: driver_gender, dtype: int64
+```
+
+We can see that approximately 30% of the stops are of women drivers, and 70% are of men.
+
+### 1.6 - Stops By Race
+
+Let's also examine the distribution by race.
+
+```python
+df_vt['driver_race'].value_counts()
+```
+
+```text
+White       266216
+Black         5741
+Asian         3607
+Hispanic      2625
+Other          279
+Name: driver_race, dtype: int64
+```
+
+Most traffic stops are of white drivers, which is expected since Vermont is around 94% white (which makes it the 2nd-least diverse state in the nation, behind Maine).  Since white drivers make up approximately 94% of the traffic stops, it would appear that the there is no observable statewide bias for pulling over non-white drivers vs. white drivers.
+
+We're far from done, however.  Let's keep on analyzing the data to see what else we can learn.
+
+### 1.7 - Police Stop Frequency by Race and Age
 
 It would be more interesting to see how the frequency of police stops breaks down by both race and age.
 
