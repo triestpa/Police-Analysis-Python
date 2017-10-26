@@ -6,11 +6,11 @@ The seemingly unending high-profile police shootings of unarmed black men (such 
 
 On the other side of the political spectrum, a common belief is that the unbalanced police targeting of non-white citizens is a myth created by the mainstream media based on a handful of extreme cases that are not representative of the national norm.
 
-In June 2017, a team of researchers at Stanford University collected and released an open-source data set of 60 million state police patrol stops from 20 states across the US.  In this tutorial, we walk through how analyze and visualize this data using Python, and we'll work to cut through the political smoke-screens in order to quantitatively determine the existence of systemic racially driven policing bias.
+In June 2017, a team of researchers at Stanford University collected and released an open-source data set of 60 million state police patrol stops from 20 states across the US.  In this tutorial, we walk through how analyze and visualize this data using Python, and we'll work to cut through the political smoke-screen in order to take a purely data-driven approach to exporing patterns in police stops across the United States.
 
 < show chart >
 
-The tutorial and analysis would not be possible without the groundwork put into place by "The Standford Open Policing Project".  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  A short tutorial for working with the data using the R programming language is provided on the official project website.  The goal of this tutorial is not to present a groundbreaking or original analysis of the dataset; the intention primarily is to provide you with the tools and foundation to dive even deeper into the data on your own.
+> This tutorial and analysis would not be possible without the work performed by [The Standford Open Policing Project](https://openpolicing.stanford.edu/).  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  [A short tutorial](https://openpolicing.stanford.edu/tutorials/) for working with the data using the R programming language is provided on the official project website.
 
 # The Data
 
@@ -112,7 +112,7 @@ We can get a quick preview of the first ten rows of the data set with the `head(
 df_vt.head()
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -572,7 +572,7 @@ Using our helper function, along with Panda's [groupby](https://pandas.pydata.or
 df_vt.groupby('driver_gender').apply(compute_outcome_stats)
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -627,8 +627,7 @@ Let's now compute the same comparison, grouping by race.
 df_vt.groupby('driver_race').apply(compute_outcome_stats)
 ```
 
-```text
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -688,11 +687,10 @@ df_vt.groupby('driver_race').apply(compute_outcome_stats)
     </tr>
   </tbody>
 </table>
-```
 
 Ok, this is interesting.  We can see that Asian drivers are arrested at the lowest rate, but receive tickets at the highest rate (roughly 1 ticket per warning).  Black and Hispanic drivers are both arrested at a higher rate and ticketed at a higher rate than white drivers.
 
-Let's visualize this result as a bar chart.
+Let's visualize these results.
 
 ```python
 race_agg = df_vt.groupby(['driver_race']).apply(compute_outcome_stats)
@@ -703,13 +701,11 @@ race_agg['arrest_rate'].plot.barh(ax=axes[1], figsize=figsize, title='Arrest Rat
 
 ![Citations and arrests by race and violation](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/citations_and_arrests_by_race.png)
 
-This is getting more interesting.
-
 ## 2.2 - Group By Outcome and Violation
 
-Let's deepen our analysis by grouping each statistic by the violation that catalyzed the traffic stop.
+We'll deepen our analysis by grouping each statistic by the violation that catalyzed the traffic stop.
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -893,7 +889,7 @@ Let's deepen our analysis by grouping each statistic by the violation that catal
   </tbody>
 </table>
 
-Ok, this table looks interesting, but it's rather large and overwhelming.  Let's trim down that dataset in order to just retrieve the most important information.
+Hmmmm ok, this table looks interesting, but it's rather large and overwhelming.  Let's trim down that dataset in order to just retrieve the most important information.
 
 ```python
 # Create new column to represent whether the driver is white
@@ -903,17 +899,17 @@ df_vt['is_white'] = df_vt['driver_race'] == 'White'
 df_vt_filtered = df_vt[~df_vt['violation'].isin(['Other (non-mapped)', 'DUI'])]
 ```
 
-We're creating a new column, that could be used instead of `driver_race`, that just represents whether or not the driver is white.  We are also generating a filtered version of the dataframe, that stips out the two violation types with the fewest datapoints.
+We're generating a new column (that could be used instead of `driver_race`) to represent whether or not the driver is white.  We are also generating a filtered version of the dataframe that strips out the two violation types with the fewest datapoints.
 
 > We not assigning the filtered dataframe to `df_vt` since we'll want to keep using the complete unfilted dataset in the next sections.
 
-Let's redo our race + violation aggregation now, using our refined dataset.
+Let's redo our race + violation aggregation now, using our filtered dataset.
 
 ```python
 df_vt_filtered.groupby(['is_white','violation']).apply(compute_outcome_stats).to_html().replace('\n','')
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -996,7 +992,9 @@ df_vt_filtered.groupby(['is_white','violation']).apply(compute_outcome_stats).to
   </tbody>
 </table>
 
-In the above table, we can see that non-white drivers are more likely to be arrested during a stop that was initiated due to an equipment or moving violation, but white drivers are more likely to be arrest for a traffic stop resulting from an "other" reason.  Non-white drivers are also, to varying degrees, more likely to be tickets for each of the violations thank white drivers.
+Ok great, this is much easier to read.
+
+In the above table, we can see that non-white drivers are more likely to be arrested during a stop that was initiated due to an equipment or moving violation, but white drivers are more likely to be arrested for a traffic stop resulting from an "other" reason.  Non-white drivers are also, to varying degrees, more likely than white drivers to be given tickets for each violation.
 
 Let's generate a bar chart now in order to visualize this data broken down by race.
 ```python
@@ -1008,7 +1006,7 @@ race_stats.plot.bar(y='citations_per_warning', ax=axes[1], title='Citations Per 
 
 ![citations and arrests by race and violation](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/citations_and_arrests_by_race_and_violation.png)
 
-We can see in this chart that Black drivers are more likely, across the board, to be issued a citation than white drivers, and Hispanic and Black drivers are generally arrested at a higher rate that white drivers, except for in the "other" category.  Asian drivers are arrested at very low rates, but their citation rates are all over the place.
+We can see in this chart that Black drivers are more likely, across the board, to be issued a citation than white drivers, and Hispanic and Black drivers are generally arrested at a higher rate that white drivers (with the exception of the rather mysterious "other" category).  Asian drivers are arrested at very low rates, but their citation rates are truly all over the place.
 
 Using the above code, we can easily create a similar visualization for grouping by gender.
 
@@ -1032,13 +1030,14 @@ Two of the more interesting fields available to us are `search_conducted` and `c
 In the analysis by the "Standford Open Policing Project", they use these two fields to perform what is known as an "outcome test".
 
 On the [project website](https://openpolicing.stanford.edu/findings/), the "outcome test" is described as such -
+
 "In the 1950s, the Nobel prize-winning economist Gary Becker proposed an elegant method to test for bias in search decisions: the outcome test.
 
-Becker proposed looking at search outcomes. If officers don’t discriminate, he argued, they should find contraband — like illegal drugs or weapons — on searched minorities at the same rate as on searched whites. If searches of minorities turn up contraband at lower rates than searches of whites, the outcome test suggests officers are applying a double standard, searching minorities on the basis of less evidence."
+Becker proposed looking at search outcomes. If officers don’t discriminate, he argued, they should find contraband — like illegal drugs or weapons — on searched minorities at the same rate as on searched whites. If searches of minorities turn up contraband at lower rates than searches of whites, the outcome test suggests officers are applying a double standard, searching minorities on the basis of less evidence." - [Findings, Stanford Open Policing Project](https://openpolicing.stanford.edu/findings/)
 
 The authors of the project also make the point that only using the "hit rate", or the rate of searches where contraband is found, can be misleading.  For this reason we'll also want to use the "search rate" in our analysis - the rate a which a traffic stop results in a search.
 
-We'll now use the available data to perform our own outcome test, to determine whether minorities in Vermont are searched on the basis of less evidence than white drivers.
+We'll now use the available data to perform our own outcome test, in order to determine whether minorities in Vermont are routinely searched on the basis of less evidence than white drivers.
 
 ### Compute Search Rate and Hit Rate
 
@@ -1083,14 +1082,16 @@ We can test our new function to determine the search rate and hit rate for the e
 compute_search_stats(df_vt)
 ```
 
+```text
 hit_rate            0.796865
 n_hits           2593.000000
 n_searches       3254.000000
 n_stops        272918.000000
 search_rate         0.011923
 dtype: float64
+```
 
-Here we can see that each traffic stop had a 1.2% change of resulting in a search, and each search had an 80% chance of yielding contraband.
+Here we can see that each traffic stop had a `1.2%` change of resulting in a search, and each search had an `80%` chance of yielding contraband.
 
 ### Compare Search Stats By Driver Gender
 
@@ -1100,7 +1101,7 @@ Using the Pandas `groupby` method, we can compute how the search stats differ by
 df_vt.groupby('driver_gender').apply(compute_search_stats)
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1139,7 +1140,7 @@ df_vt.groupby('driver_gender').apply(compute_search_stats)
   </tbody>
 </table>
 
-We can see here that men are about three times as likely to be searched as women, but that for each gender the same standard of evidence is used, since roughly 80% of searches for both result in contraband being found.  The implication here is men are searched and caught with contraband more often than women, but that there is no discernable gender discrimination in deciding who to search.
+We can see here that men are about three times as likely to be searched as women, but that for each gender the same standard of evidence is used, since roughly 80% of searches for both result in contraband being found.  The implication here is men are searched and caught with contraband more often than women, but it is unclear whether there is any gender discrimination in deciding who to search.
 
 ### Compare Search Stats By Age
 
@@ -1150,7 +1151,7 @@ age_groups = pd.cut(df_vt["driver_age"], np.arange(15, 70, 5))
 df_vt.groupby(age_groups).apply(compute_search_stats)
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1253,7 +1254,7 @@ df_vt.groupby(age_groups).apply(compute_search_stats)
   </tbody>
 </table>
 
-We can see here that the search rate steadily declines as drivers get older.  What also interesting is that the hit rate also declines rapidly older drivers.  This shows that older drivers are searched less often, and searches on older drivers generally turn up contraband more rarely.
+We can see here that the search rate steadily declines as drivers get older, and that the hit rate also declines rapidly for older drivers.  This shows that older drivers are searched less often, and searches on older drivers generally turn up contraband more rarely.
 
 It's worth noting that the sample sizes (`n_hits`, `n_searches`, and `n_stops`) also decrease steadily through the age brackets, resulting in values that are less precise and much more volatile.  This increase in volatility possibly explains why the hit rates on individuals aged 50-60 are significantly higher than in the neighboring age brackets.
 
@@ -1265,7 +1266,7 @@ Now for the most interesting part - comparing search data by race.
 df_vt.groupby('driver_race').apply(compute_search_stats)
 ```
 
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1322,19 +1323,19 @@ df_vt.groupby('driver_race').apply(compute_search_stats)
 
 Black and Hispanic drivers are searched at much higher rates than white drivers (5% and 4% of traffic stops respectively, versus 1% for white drivers), but the searches of these drivers only yield contraband 60-70% of the time, compared to 80% of the time for white drivers.
 
-To rephrase these results - Black drivers are 500% more likely to be searched than white drivers during a traffic stop, but are 20% less likely to be caught with contraband in the event of a search.
+To rephrase these results - **Black drivers are 500% more likely to be searched than white drivers during a traffic stop, but are 20% less likely to be caught with contraband in the event of a search.**
 
 ### Compare Search Stats By Race and Location
 
-Let's add in location as another factor.  It's possible that some counties (such as those with interstate highways where opioid trafficking is prevalent) have a much higher search rate / lower hit rates for both white and non-white drivers, leading to distortion in the overall stats.  By controlling for location, we can determine if this is the case.
+Let's add in location as another factor.  It's possible that some counties (such as those with interstate highways where opioid trafficking is prevalent) have greater racial diversity than more remote areas, but also a much higher search rate / lower hit rates for both white and non-white drivers, leading to distortion in the overall stats.  By controlling for location, we can determine if this is the case.
 
 We'll define a two new helper functions to generate the visualizations.
 
 ```python
 def generate_comparison_scatter(df, ax, state, race, field):
     """Generate scatter plot comparing field for white drivers with minority drivers"""
-    race_location_agg = df.groupby(['county_name','driver_race']).apply(compute_search_stats).reset_index().dropna()
-    race_location_agg = race_location_agg.pivot(index='county_name', columns='driver_race', values=field)
+    race_location_agg = df.groupby(['county_fips','driver_race']).apply(compute_search_stats).reset_index().dropna()
+    race_location_agg = race_location_agg.pivot(index='county_fips', columns='driver_race', values=field)
     ax = race_location_agg.plot.scatter(ax=ax, x='White', y=race, s=150)
     ax.set_xlabel('{} - White'.format(field, ))
     ax.set_ylabel('{} - {}'.format(field, race))
@@ -1363,8 +1364,7 @@ generate_comparison_scatters(df_vt, 'VT')
 
 ![search scatters vt](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_vt.png)
 
-
-The plots above are comparing `search_rate` (top row) and `hit_rate` (bottom row) for Black (left column) and Hispanic (right column) drivers compared with white drivers in each county.  If all of the dots (each of which represents a county) followed the diagonal center line, the implication would be that white drivers and non-white drivers are searched with the exact same standard of evidence.
+The plots above are comparing `search_rate` (top row) and `hit_rate` (bottom row) for Black (left column) and Hispanic (right column) drivers compared with white drivers in each county.  If all of the dots (each of which represents a county) followed the diagonal center line, the implication would be that white drivers and non-white drivers are searched at the exact same rate with the exact same standard of evidence.
 
 Unfortunately, this is not the case.  In the above charts, we can see that, for every single county, the search rate is higher for minorities and the hit rate is lower.
 
@@ -1373,7 +1373,7 @@ Let's define one more visualization helper function, to show all of these result
 ```python
 def generate_county_search_stats_scatter(df, state):
     """Generate a scatter plot of search rate vs. hit rate by race and county"""
-    race_location_agg = df.groupby(['county_name','driver_race']).apply(compute_search_stats)
+    race_location_agg = df.groupby(['county_fips','driver_race']).apply(compute_search_stats)
 
     fig, ax = plt.subplots(figsize=figsize)
     for c, frame in race_location_agg.groupby('driver_race'):
@@ -1389,6 +1389,8 @@ def generate_county_search_stats_scatter(df, state):
 generate_county_search_stats_scatter(df_vt, "VT")
 ```
 
+![county scatters vt](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_vt.png)
+
 **In the above visualization, we can see a clear pattern of discrimination in traffic stop searches.**
 
 The search rates and hit rates for white drivers in most counties are quite consistently clustered around 80% and 1% respectively.  We can see, however, that nearly every county searches black and hispanic drivers at a higher rate, and that these searches uniformally have a lower hit rate than those on white drivers.
@@ -1401,25 +1403,42 @@ You've heard the phrase "A picture is worth a thousand words"?  The above chart 
 
 # 3 - Analyzing Other States
 
+Vermont is a great state to test out our analysis on, but the dataset size is relatively small.  Let's now perform the same analysis on other states to determine if this pattern presists across state lines.
+
 ### 3.0 - Massachuesstts
-Let's now perform the same analysis on my home state, Massachusetts.  This time we'll have more data to work with - roughly 3.4 million traffic stops.
+First we'll perform the analysis on my home state, Massachusetts.  This time we'll have more data to work with - roughly 3.4 million traffic stops.
 
 Download the dataset to your project's `/data` directory - https://stacks.stanford.edu/file/druid:py883nd2578/MA-clean.csv.gz
 
-Then load the dataset (this time we'll only load the columns that we're examining, in order to save memory), and remove rows with missing data.
-```python
-df_ma = pd.read_csv('./data/MA-clean.csv.gz', compression='gzip', low_memory=False, usecols=fields)
-df_ma.dropna(inplace=True)
-df_ma = df_ma[df_ma['driver_race'] != 'Other']
-```
-
-Let's generate a statewide table of search rate and hit rate by race.
+We've developed a solid reusable formula for reading and visualizing each state dataset, so let's wrap the entire recipe in a new helper function.
 
 ```python
-df_ma.groupby('driver_race').apply(compute_search_stats)
+fields = ['county_fips', 'driver_race', 'search_conducted', 'contraband_found']
+types = {
+    'contraband_found': bool,
+    'county_fips': float,
+    'driver_race': object,
+    'search_conducted': bool
+}
+
+def analyze_state_data(state):
+    df = pd.read_csv('./data/{}-clean.csv.gz'.format(state), compression='gzip', low_memory=True, dtype=types, usecols=fields)
+    df.dropna(inplace=True)
+    df = df[df['driver_race'] != 'Other']
+    generate_comparison_scatters(df, state)
+    generate_county_search_stats_scatter(df, state)
+    return df.groupby('driver_race').apply(compute_search_stats)
 ```
 
-<table border="1" class="dataframe">
+We're making a few optimizations here in order to make the entire process a bit more streamlined and computationally efficient.  By only reading the four columns that we're interested in, and by specifying the datatypes ahead of time, we'll be able to read much larger datasets into memory more efficiently.
+
+The first output is a statewide table of search rate and hit rate by race.
+
+```python
+analyze_state_data('MA')
+```
+
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1478,40 +1497,29 @@ We can see here again that Black and Hispanic drivers are searched at significan
 
 If we compare the stats for MA to VT, we'll also notice that police in MA seem to use a much lower standard of evidence when searching a vehicle, with their searches averaging around 50% hit rate, compared to 80% in VT.
 
-Let's generate the scatter plots too, to examine these stats visually.
+The `analyze_state_data` function also produces scatter plots comparing search and hit rates by county.
 
-```python
-generate_comparison_scatters(df_ma, 'MA')
-generate_county_search_stats_scatter(df_ma, "MA")
-```
-
-![search scatters ma](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_ma.png)
-![county scatters ma](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatters_ma.png)
+![search scatters MA](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_MA.png)
+![county scatters MA](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_MA.png)
 
 The trend here is much less obvious than in Vermont, but it's still clear that traffic stops of minority drivers tend to be more likely to result in a search, even though the hit rates are *generally* lower than they are for white drivers.
 
-### 3.1 - Wisconsin
+### 3.1 - Wisconsin & Connecticut
 
-Wisconsin has caught quite a bit of flack recently for being "a bad place to live if you're not white" (include news articles).
+Wisconsin and Connecticut have been named as some of the [worst states in America for racial disparities](https://www.wpr.org/wisconsin-considered-one-worst-states-racial-disparities).
 
 Let's see how their police stats stack up.
 
-Again, you'll need to download the Wisconsin dataset to your project's `/data` directory - https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
+Again, you'll need to download the Wisconsin and Connecticut dataset to your project's `/data` directory.
+- Wisconsin: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
+- Connecticut: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
 
-
+We can call our `analyze_state_data` function for Wisconsin (WI), once the dataset has been downloaded.
 ```python
-df_wi = pd.read_csv('./data/WI-clean.csv.gz', compression='gzip', low_memory=False, usecols=fields)
-df_wi.dropna(inplace=True)
-df_wi = df_wi[df_wi['driver_race'] != 'Other']
+analyze_state_data('WI')
 ```
 
-We'll again compute the search stats using our handy helper method.
-
-```python
-df_wi.groupby('driver_race').apply(compute_search_stats)
-```
-
-<table border="1" class="dataframe">
+<table border="0" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1566,41 +1574,428 @@ df_wi.groupby('driver_race').apply(compute_search_stats)
   </tbody>
 </table>
 
-The trends here should be starting to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at the same rate as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely on average to yield contraband than searches on white drivers.
+The trends here should be starting to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at the same rate as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely to yield contraband than searches on white drivers.
 
-We'll visualize the same result, by county, in our scatterplots.
+![search scatters WI](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_WI.png)
+![county scatters WI](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_WI.png)
+
+Starting to look familiar?  We can see here, yet again, that the standard of evidence for searching Black and Hispanic drivers is higher in virtually every county than for white drivers.  In one outlying county, almost 25% (!) of traffic stops for black drivers resulted in a search, even though only half of those searches yielded contraband.
+
+Let's do the same analysis for Connecticut
 
 ```python
-generate_comparison_scatters(df_wi, 'WI')
-generate_county_search_stats_scatter(df_wi, "WI")
+analyze_state_data('CT')
 ```
 
-![search scatters wi](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_wi.png)
-![county scatters wi](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatters_wi.png)
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.384615</td>
+      <td>10.0</td>
+      <td>26.0</td>
+      <td>5949.0</td>
+      <td>0.004370</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.284072</td>
+      <td>346.0</td>
+      <td>1218.0</td>
+      <td>37460.0</td>
+      <td>0.032515</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.291925</td>
+      <td>282.0</td>
+      <td>966.0</td>
+      <td>31154.0</td>
+      <td>0.031007</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.379344</td>
+      <td>1179.0</td>
+      <td>3108.0</td>
+      <td>242314.0</td>
+      <td>0.012826</td>
+    </tr>
+  </tbody>
+</table>
 
-Starting to look familiar?  We can see in the chart bellow that the standard of evidence for searching non-white drivers is higher in virtually every county than for white drivers.  In one outlying county, almost 25% (!) of traffic stops for black drivers resulted in a search, even though only 50% of those searches yielded contraband.
+![search scatters CT](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_CT.png)
+![county scatters CT](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_CT.png)
 
-< change this section a bit >
+Again, the pattern persists.
+
+### 3.2 - Arizona
+
+Now that we have a reusable function declared, we can generate each result rather quickly for each state (with available data), once we've downloaded each dataset.
+
+```python
+analyze_state_data('AZ')
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.196664</td>
+      <td>224.0</td>
+      <td>1139.0</td>
+      <td>48177.0</td>
+      <td>0.023642</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.255548</td>
+      <td>2188.0</td>
+      <td>8562.0</td>
+      <td>116795.0</td>
+      <td>0.073308</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.160930</td>
+      <td>5943.0</td>
+      <td>36929.0</td>
+      <td>501619.0</td>
+      <td>0.073620</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.242564</td>
+      <td>9288.0</td>
+      <td>38291.0</td>
+      <td>1212652.0</td>
+      <td>0.031576</td>
+    </tr>
+  </tbody>
+</table>
+
+![search scatters AZ](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_AZ.png)
+![county scatters AZ](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_AZ.png)
+
+
+### 3.3 - Colorado
+
+```python
+analyze_state_data('CO')
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.537634</td>
+      <td>50.0</td>
+      <td>93.0</td>
+      <td>32471.0</td>
+      <td>0.002864</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.481283</td>
+      <td>270.0</td>
+      <td>561.0</td>
+      <td>71965.0</td>
+      <td>0.007795</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.450454</td>
+      <td>1041.0</td>
+      <td>2311.0</td>
+      <td>308499.0</td>
+      <td>0.007491</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.651388</td>
+      <td>3638.0</td>
+      <td>5585.0</td>
+      <td>1767804.0</td>
+      <td>0.003159</td>
+    </tr>
+  </tbody>
+</table>
+
+![search scatters CO](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_CO.png)
+![county scatters CO](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_CO.png)
+
+
+### 3.4 - Washington
+
+```python
+analyze_state_data('WA')
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.087143</td>
+      <td>608.0</td>
+      <td>6977.0</td>
+      <td>352063.0</td>
+      <td>0.019817</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.130799</td>
+      <td>1717.0</td>
+      <td>13127.0</td>
+      <td>254577.0</td>
+      <td>0.051564</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.103366</td>
+      <td>2128.0</td>
+      <td>20587.0</td>
+      <td>502254.0</td>
+      <td>0.040989</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.156008</td>
+      <td>15768.0</td>
+      <td>101072.0</td>
+      <td>4279273.0</td>
+      <td>0.023619</td>
+    </tr>
+  </tbody>
+</table>
+
+![search scatters WA](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_WA.png)
+![county scatters WA](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_WA.png)
+
+
+### 3.5 - North Carolina
+
+```python
+analyze_state_data('NC')
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.104377</td>
+      <td>31.0</td>
+      <td>297.0</td>
+      <td>46287.0</td>
+      <td>0.006416</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.182489</td>
+      <td>1955.0</td>
+      <td>10713.0</td>
+      <td>1222533.0</td>
+      <td>0.008763</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.119330</td>
+      <td>776.0</td>
+      <td>6503.0</td>
+      <td>368878.0</td>
+      <td>0.017629</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.153850</td>
+      <td>3387.0</td>
+      <td>22015.0</td>
+      <td>3146302.0</td>
+      <td>0.006997</td>
+    </tr>
+  </tbody>
+</table>
+
+![search scatters NC](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_NC.png)
+![county scatters NC](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_NC.png)
+
+### 3.6 - Texas
+
+You might want to let this one run while you go fix yourself a cup of coffee or tea.  At almost 24 million traffic stops, the Texas dataset takes a rather long time to process.
+
+```python
+analyze_state_data('TX')
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hit_rate</th>
+      <th>n_hits</th>
+      <th>n_searches</th>
+      <th>n_stops</th>
+      <th>search_rate</th>
+    </tr>
+    <tr>
+      <th>driver_race</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Asian</th>
+      <td>0.289271</td>
+      <td>976.0</td>
+      <td>3374.0</td>
+      <td>349105.0</td>
+      <td>0.009665</td>
+    </tr>
+    <tr>
+      <th>Black</th>
+      <td>0.345983</td>
+      <td>27588.0</td>
+      <td>79738.0</td>
+      <td>2300427.0</td>
+      <td>0.034662</td>
+    </tr>
+    <tr>
+      <th>Hispanic</th>
+      <td>0.219449</td>
+      <td>37080.0</td>
+      <td>168969.0</td>
+      <td>6525365.0</td>
+      <td>0.025894</td>
+    </tr>
+    <tr>
+      <th>White</th>
+      <td>0.335098</td>
+      <td>83157.0</td>
+      <td>248157.0</td>
+      <td>13576726.0</td>
+      <td>0.018278</td>
+    </tr>
+  </tbody>
+</table>
+
+![search scatters TX](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_TX.png)
+![county scatters TX](https://storage.googleapis.com/cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_TX.png)
+
+### 3.7 - Even more data visualizations
+
+I highly recommend that you visit the [Standford Open Policing Project results page](https://openpolicing.stanford.edu/findings/) for a lot more interesting visualizations of this data.  Here you can easily browse the search outcome results for all available states, and explore additonal analysis such as stop rate by race (using county population demographics data) as well as the effects of recreational marijuana legalization on search rates.
 
 # 5 - What next?
 
-Does this mean we shouldnt support our police departments? Does it mean that most police officers are overtly racist?  **Certainly not.**
+Do these results imply that all police officers are overtly racist?  **No.**
 
-Does it mean that in the United States, non-white citizens are uniformly searched with a lower standard of evidence than white citizens?  **Yes**.
+Do they show that in the United States, Black and Hispanic drivers are searched much more frequently than white drivers, often with a lower standard of evidence?  **Yes.**.
 
-Regardless of political views, I think everyone can agree that *facts are paramount to idealogy* in making laws and setting policy.  These numbers don't lie - this data was sourced directly from the state police departments, and the examples that we've gone over here have not been cherry picked to make any political point: these trends are apparent across the entire dataset of 60 million police stops.  To see the full analysis for all 20 available states, check out the official findings here - https://5harad.com/papers/traffic-stops.pdf.
+What we are observing here is a pattern of systemic racism.  The racial disparities that we can see in this analysis are the result of a widespread (sometimes subconsious) bias against minorities in the United States - the data and acompanying analysis are indicative of social trends that are certainly not limited to police officers, and should not be used to disparage this profession as a whole.  Racial discrimination is present at all levels of society, and in virtually every industry, from [retail](https://www.theguardian.com/us-news/2015/jun/22/zara-reports-culture-of-favoritism-based-on-race) to the [tech](https://www.wired.com/story/tech-leadership-race-problem/)
 
-[ include extra stats from the official findings - ticket rates, tail lights, marajuana ]
+Regardless of political views, I hope everyone can agree that *facts should be paramount to idealogy* in making laws and setting policy.  These numbers don't lie - this data was sourced directly from the state police departments, and the examples that we've gone over here have not been cherry picked to make any political point: these trends are apparent across the entire dataset of 60 million police stops.
 
-Whatever your views may be on the divisive social and political issues that have enveloped our country over the past few years, I think it's important to take a step back and to look objectively at what is shown by the data.  I'm not suggesting any solutions here, that's really not the point of this blog post, but I sincerely believe that sensibly acknowledging the problem across political lines is the first step to any sustainable long-term progress.
+To see the full offical analysis for all 20 available states, check out the official findings paper here - https://5harad.com/papers/traffic-stops.pdf.
 
-I hope that this tutorial has provided the tools you might need to take the analysis further.  There's a *lot* more that you can do with the data than what we've covered here.
+I hope that this tutorial has provided the tools you might need to take this analysis further.  There's a *lot* more that you can do with the data than what we've covered here.
 
 - Analyze police stops for your home state and county (if the data is available).
-- Expand the analysis to include other factors in the dataset, such as `Stop Reason` and `Search Type`.  The data sets for some states have lots of additional fields available as well, such as whether the stop was drug related, whether the driver was from out-of-state, and metadata covering the year, make, and model of the car.
 - Combine your analysis with US census data on the demographic, social, and economic data about each county.
 - Create a web app to display the county trends on an interactive map.
-- Build a mobile app to warn drivers when they're entering a county that seems to be more distrusting of drivers of a certain race.
+- Build a mobile app to warn drivers when they're entering a county that apears to be more distrusting of drivers of a certain race.
 - Open-source your own analysis, spread your findings, seek out peer review, maybe even write an explanatory blog post.
 
-As always, feel free to commend below with any questions, comments, or criticisms.
+As always, please feel free to comment below with any questions, comments, or criticisms.
