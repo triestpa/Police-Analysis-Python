@@ -10,6 +10,8 @@ In June 2017, a team of researchers at Stanford University collected and release
 
 ![county scatters vt](https://cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_VT.png)
 
+The source code and figures for this analysis can be found in the companion Github repository - https://github.com/triestpa/Police-Analysis-Python
+
 > This tutorial and analysis would not be possible without the work performed by [The Standford Open Policing Project](https://openpolicing.stanford.edu/).  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  [A short tutorial](https://openpolicing.stanford.edu/tutorials/) for working with the data using the R programming language is provided on the official project website.
 
 # The Data
@@ -1990,5 +1992,9 @@ I hope that this tutorial has provided the tools you might need to take this ana
 - Create a web app to display the county trends on an interactive map.
 - Build a mobile app to warn drivers when they're entering an area that appears to be more distrusting of drivers of a certain race.
 - Open-source your own analysis, spread your findings, seek out peer review, maybe even write an explanatory blog post.
+
+The source code and figures for this analysis can be found in the companion Github repository - https://github.com/triestpa/Police-Analysis-Python
+
+The code for this project is 100% open source ([MIT license](https://en.wikipedia.org/wiki/MIT_License)), so feel free to use it however you see fit in your own projects.
 
 As always, please feel free to comment below with any questions, comments, or criticisms.
