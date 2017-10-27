@@ -1,10 +1,10 @@
-# Intro
+## Data Science, Politics, and Police
 
-The intersection of data science, politics, and social policy can be rather complicated.  This junction of ideas and disciplines can be rife with strong feelings, pre-conceived beliefs, and agendas that are sometimes [more based on belief than on empirical evidence](https://en.wikipedia.org/wiki/Global_warming_controversy).  Data science is particularly important in this area since it provides a methodology for examining the world in a pragmatic fact-first manner, and for providing insight into some of the most important issues that we face today.
+The intersection of science, politics, personal opinion, and social policy can be rather complex.  This junction of ideas and disciplines is often rife with controversies, strongly held viewpoints, and agendas that are often [more based on belief than on empirical evidence](https://en.wikipedia.org/wiki/Global_warming_controversy).  Data science is particularly important in this area since it provides a methodology for examining the world in a pragmatic fact-first manner, and is capable of providing insight into some of the most important issues that we face today.
 
-The recent high-profile police shootings of unarmed black men, such as [Michael Brown](https://en.wikipedia.org/wiki/Shooting_of_Michael_Brown)(2104), [Tamir Rice](https://en.wikipedia.org/wiki/Shooting_of_Tamir_Rice)(2014), [Anton Sterling](https://en.wikipedia.org/wiki/Shooting_of_Alton_Sterling)(2016), and [Philando Castile](https://en.wikipedia.org/wiki/Shooting_of_Philando_Castile)(2016), have triggered a divisive national dialog on the issue of police violence.
+The recent high-profile police shootings of unarmed black men, such as [Michael Brown](https://en.wikipedia.org/wiki/Shooting_of_Michael_Brown) (2104), [Tamir Rice](https://en.wikipedia.org/wiki/Shooting_of_Tamir_Rice) (2014), [Anton Sterling](https://en.wikipedia.org/wiki/Shooting_of_Alton_Sterling) (2016), and [Philando Castile](https://en.wikipedia.org/wiki/Shooting_of_Philando_Castile) (2016), have triggered a divisive national dialog on the issue of racial bias in policing.
 
-These shootings have catalyzed massive protests against what is seen as a systemic targeting of people-of-color by police forces across the country.  On the other side of the political spectrum, a common belief is that the unbalanced targeting of non-white citizens is a myth created by the mainstream media based on a handful of extreme cases, and that these highly-publicized stories are not representative of the national norm.
+These shootings have spurred the growth of large social movements seeking to raise awareness of what is viewed as a systemic targeting of people-of-color by police forces across the country.  On the other side of the political spectrum, many hold a view that the unbalanced targeting of non-white citizens is a myth created by the media based on a handful of extreme cases, and that these highly-publicized stories are not representative of the national norm.
 
 In June 2017, a team of researchers at Stanford University collected and released an open-source data set of 60 million state police patrol stops from 20 states across the US.  In this tutorial, we will walk through how to analyze and visualize this data using Python.
 
@@ -12,11 +12,13 @@ In June 2017, a team of researchers at Stanford University collected and release
 
 The source code and figures for this analysis can be found in the companion Github repository - https://github.com/triestpa/Police-Analysis-Python
 
+To preview the completed IPython notebook, visit the page [here](https://github.com/triestpa/Police-Analysis-Python/blob/master/traffic_stop_analysis.ipynb).
+
 > This tutorial and analysis would not be possible without the work performed by [The Standford Open Policing Project](https://openpolicing.stanford.edu/).  Much of the analysis performed in this tutorial is based on the work that has already performed by this team.  [A short tutorial](https://openpolicing.stanford.edu/tutorials/) for working with the data using the R programming language is provided on the official project website.
 
-# The Data
+## The Data
 
-In the United States, there are, on average, more than 50,000 traffic stops every day.  The potential number of data points for each stop is huge, from the demographics (age, race, gender) of the driver, to the location, time of day, stop reason, stop outcome, car model, and much more.  Unfortunately, not every state makes this data available, and those that do often have different reporting standards for what information is recorded.  Even different counties and districts within each state can be inconstant in how each traffic stop is recorded.  The research team at Stanford has managed to gather traffic-stop data from twenty states, and has worked to regularize the reporting standards for 11 fields.
+In the United States, there are, on average, more than 50,000 traffic stops every day.  The potential number of data points for each stop is huge, from the demographics (age, race, gender) of the driver, to the location, time of day, stop reason, stop outcome, car model, and much more.  Unfortunately, not every state makes this data available, and those that do often have different standards for what information is recorded.  Different counties and districts within each state can also be inconstant in how each traffic stop is recorded.  The [research team at Stanford](https://openpolicing.stanford.edu/) has managed to gather traffic-stop data from twenty states, and has worked to regularize the reporting standards for 11 fields.
 
 - Stop Date
 - Stop Time
@@ -36,9 +38,9 @@ Most states do not have data available for every field, but there is enough over
 
 We'll start with analyzing the data set for Vermont.  We're looking at Vermont first for a few reasons.
 
-1. The Vermont dataset is small enough to be very manageable at only 283,285 traffic stops (compared to the Texas data set, for instance, which contains records on almost 24 million stops).
+1. The Vermont dataset is small enough to be very manageable, with only 283,285 traffic stops (compared to the Texas data set, for instance, which contains records on almost 24 million stops).
 2. There is not much missing data, as all eleven fields mentioned above are covered.
-3. Vermont is 94% white, but is also in a part of the country known for being quite liberal (disclaimer - I grew up in the Boston area, and I've spent a quite a bit of time in Vermont).  Many in this area consider this state to be very progressive and might like to believe that their state institutions are not as prone to systemic racism as other parts of the country.  It will be interesting to determine if the data validates this view.
+3. Vermont is 94% white, but is also in a part of the country known for being very liberal (disclaimer - I grew up in the Boston area, and I've spent a quite a bit of time in Vermont).  Many in this area consider this state to be very progressive and might like to believe that their state institutions are not as prone to systemic racism as the institutions in other parts of the country.  It will be interesting to determine if the data validates this view.
 
 #### 0.0 - Download Datset
 
@@ -50,9 +52,9 @@ Create a new directory for the project, say `police-data-analysis`, and move the
 
 #### 0.2 - Optional: Create new virtualenv (or Anaconda) environment
 
-If you want to keep your Python dependencies neat and separated between projects, now would be the time to create and activate a new environment for this analysis, using either virtualenv or Anaconda.
+If you want to keep your Python dependencies neat and separated between projects, now would be the time to create and activate a new environment for this analysis, using either [virtualenv](https://virtualenv.pypa.io/en/stable/) or [Anaconda](https://conda.io/docs/user-guide/install/index.html).
 
-I'm not going to go into detail about how to do this, if you want to learn more check out the tutorials here.
+Here are some tutorials to help you get set up.
 virtualenv - https://virtualenv.pypa.io/en/stable/
 Anaconda - https://conda.io/docs/user-guide/install/index.html
 
@@ -60,12 +62,12 @@ Anaconda - https://conda.io/docs/user-guide/install/index.html
 
 We'll need to install a few Python packages to perform our analysis.
 
-On the command line, run the following to install the required libraries.
+On the command line, run the following command to install the required libraries.
 ```bash
 pip install numpy pandas matplotlib ipython jupyter
 ```
 
-> If you're using Anaconda, you can replace the `pip` command here with `conda`.  Depending on your installation, you might need to use `pip3` instead of `pip` in order to install the Python 3 versions of the packages.
+> If you're using Anaconda, you can replace the `pip` command here with `conda`.  Also, depending on your installation, you might need to use `pip3` instead of `pip` in order to install the Python 3 versions of the packages.
 
 #### 0.4 - Start Jupyter Notebook
 
@@ -77,7 +79,7 @@ jupyter notebook
 
 Open your browser to the specified URL (probably `localhost:8888`, unless you have a special configuration) and create a new notebook.
 
-> I used Python 3.6 for writing this tutorial.  If you want to use another Python version, that's fine, most of the code that we write should work the same way on any Python 2.x or 3.x distribution.
+> I used Python 3.6 for writing this tutorial.  If you want to use another Python version, that's fine, most of the code that we'll cover should work on any Python 2.x or 3.x distribution.
 
 #### 0.5 - Load Dependencies
 
@@ -92,7 +94,7 @@ import matplotlib.pyplot as plt
 figsize = (16,8)
 ```
 
-We're also setting a shared variable `figsize` that we'll reuse later on in our data visualization code.
+We're also setting a shared variable `figsize` that we'll reuse later on in our data visualization logic.
 
 #### 0.6 - Load Dataset
 
@@ -104,7 +106,7 @@ df_vt = pd.read_csv('./data/VT-clean.csv.gz', compression='gzip', low_memory=Fal
 
 > This command assumes that you are storing the data set in the `data` directory of the project.  If you are not, you can adjust the data file path accordingly.
 
-## 1 - Vermont Police Data Exploration
+## 1 - Vermont Data Exploration
 
 Now begins the fun part.
 
@@ -408,9 +410,9 @@ Grand Isle County      520
 Name: county_name, dtype: int64
 ```
 
-If you're familiar with Vermont's geography, you'll notice that the police stops seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusetts, and New York state.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
+If you're familiar with Vermont's geography, you'll notice that the police stops seem to be more concentrated in counties in the southern-half of the state.  The southern-half of the state is also where much of the cross-state traffic flows in transit to and from New Hampshire, Massachusetts, and New York.  Since the traffic stop data is from the state troopers, this interstate traffic could potentially explain why we see more traffic stops in these counties.
 
-Here's a quick map generated with [Tableau](https://www.tableau.com/) to visualize this table.
+Here's a quick map generated with [Tableau](https://public.tableau.com/profile/patrick.triest#!/vizhome/VtPoliceStops/Sheet1) to visualize this regional distribution.
 
 ![Vermont County Map](https://cdn.patricktriest.com/blog/images/posts/policing-data/vermont_map.png)
 
@@ -431,7 +433,11 @@ Other (non-mapped)         2
 Name: violation, dtype: int64
 ```
 
-Unsurprisingly, the top reason for a traffic stop is "Moving Violation" (speeding, reckless driving, etc.), followed by "Equipment" (faulty lights, illegal modifications, etc.).  By comparing these fields with the `violation_raw` fields, we can see that the "Other" category includes "Investigatory stop" (the police officer sees something suspicious happening within the vehicle) and  "Externally Generated Stop" (possibly as a result of a 911 call). "DUI" ("driving under the influence", i.e. drunk driving) is surprisingly the least prevalent, with only 711 total recorded stops for this reason over the five year period (2010-2015) that the dataset covers.
+Unsurprisingly, the top reason for a traffic stop is `Moving Violation` (speeding, reckless driving, etc.), followed by `Equipment` (faulty lights, illegal modifications, etc.).
+
+By comparing these fields with the `violation_raw` fields, we can see that the `Other` category includes "Investigatory stop" (the police officer sees something suspicious happening within the vehicle) and  "Externally Generated Stop" (possibly as a result of a 911 call).
+
+`DUI` ("driving under the influence", i.e. drunk driving) is surprisingly the least prevalent, with only 711 total recorded stops for this reason over the five year period (2010-2015) that the dataset covers.  This seems low, since [Vermont had 2,647 DUI arrests in 2015](http://www.statisticbrain.com/number-of-dui-arrests-per-state/), so I suspect that a large proportion of these arrests were performed by municipal police department, and/or began with a `Moving Violation` stop, instead of a more specific `DUI` stop.
 
 #### 1.4 - Outcomes
 
@@ -450,7 +456,9 @@ Verbal Warning              10
 Name: stop_outcome, dtype: int64
 ```
 
-A majority of stops result in a written warning - which goes on the record but carries no direct penalty.  A bit over 1/3 of the stops result in a citation (commonly known as a ticket), which comes with a direct fine and can carry other negative side-effects such as raising a driver's auto insurance premiums.  The decision to give a warning or a citation is often at the discretion of the police officer, so this could be a good source for studying bias.
+A majority of stops result in a written warning - which goes on the record but carries no direct penalty.  A bit over 1/3 of the stops result in a citation (commonly known as a ticket), which comes with a direct fine and can carry other negative side-effects such as raising a driver's auto insurance premiums.
+
+The decision to give a warning or a citation is often at the discretion of the police officer, so this could be a good source for studying bias.
 
 #### 1.5 - Stops By Gender
 Let's break down the traffic stops by gender.
@@ -484,7 +492,7 @@ Other          279
 Name: driver_race, dtype: int64
 ```
 
-Most traffic stops are of white drivers, which is to be expected since [Vermont is around 94% white](https://www.census.gov/quickfacts/VT) (which makes it the 2nd-least diverse state in the nation, [behind Maine](https://www.census.gov/quickfacts/ME)).  Since white drivers make up approximately 94% of the traffic stops, there's no obvious bias here for pulling over non-white drivers vs white drivers.  Using the same methodology, however, we can also find that while black drivers make up roughly 2% of all traffic stops, [only 1.3% of Vermont's population is black](https://www.census.gov/quickfacts/VT).
+Most traffic stops are of white drivers, which is to be expected since [Vermont is around 94% white](https://www.census.gov/quickfacts/VT) (making it the 2nd-least diverse state in the nation, [behind Maine](https://www.census.gov/quickfacts/ME)).  Since white drivers make up approximately 94% of the traffic stops, there's no obvious bias here for pulling over non-white drivers vs white drivers.  Using the same methodology, however, we can also see that while black drivers make up roughly 2% of all traffic stops, [only 1.3% of Vermont's population is black](https://www.census.gov/quickfacts/VT).
 
 Let's keep on analyzing the data to see what else we can learn.
 
@@ -515,7 +523,7 @@ One interesting topic that we touched on earlier is the fact that the decision t
 
 In order to assist in this analysis, we'll define a helper function to aggregate a few important statistics from our dataset.
 
-- `citations_per_warning` - The ratio of citations to warnings.  A higher number here signifies a higher likelihood of being ticketed instead of getting off with a warning.
+- `citations_per_warning` - The ratio of citations to warnings.  A higher number signifies a greater likelihood of being ticketed instead of getting off with a warning.
 - `arrest_rate` - The percentage of stops that end in an arrest.
 
 ```python
@@ -554,7 +562,7 @@ n_warnings               166363.000000
 dtype: float64
 ```
 
-In the above result, we can see that about 1.2% of traffic stops result in an arrest, and there are on-average 0.62 citations (tickets) issued per warning.  This data passes the sanity check, but it's too coarse to provide any terribly interesting insights.  Let's dig deeper.
+In the above result, we can see that about `1.17%` of traffic stops result in an arrest, and there are on-average `0.62` citations (tickets) issued per warning.  This data passes the sanity check, but it's too coarse to provide any terribly interesting insights.  Let's dig deeper.
 
 #### 2.1 - Breakdown By Gender
 
@@ -609,7 +617,7 @@ df_vt.groupby('driver_gender').apply(compute_outcome_stats)
 
 This is a simple example of the common [split-apply-combine](https://pandas.pydata.org/pandas-docs/stable/groupby.html) technique.  We'll be building on this pattern for the remainder of the tutorial, so make sure that you understand how this comparison table is generated before continuing.
 
-We can see here that men are, on average, twice as likely to be arrested during a traffic stop, and are also slightly more likely to be given a citation instead of a warning.  It is, of course, not clear from the data whether this is indicative of any bias by the police officers, or if it just reflects that men are being pulled over for more serious offenses than women on average.
+We can see here that men are, on average, twice as likely to be arrested during a traffic stop, and are also slightly more likely to be given a citation than women.  It is, of course, not clear from the data whether this is indicative of any bias by the police officers, or if it just reflects that men are being pulled over for more serious offenses than women on average.
 
 #### 2.2 - Breakdown By Race
 
@@ -695,7 +703,7 @@ race_agg['arrest_rate'].plot.barh(ax=axes[1], figsize=figsize, title='Arrest Rat
 
 #### 2.3 - Group By Outcome and Violation
 
-We'll deepen our analysis by grouping each statistic by the violation that catalyzed the traffic stop.
+We'll deepen our analysis by grouping each statistic by the violation that triggered the traffic stop.
 
 <table border="0" class="dataframe">
   <thead>
@@ -990,7 +998,7 @@ In the above table, we can see that non-white drivers are more likely to be arre
 
 #### 2.4 - Visualize Stop Outcome and Violation Results
 
-Let's generate a bar chart now in order to visualize this data broken down by more granularly race.
+Let's generate a bar chart now in order to visualize this data broken down by race.
 ```python
 race_stats = df_vt_filtered.groupby(['violation', 'driver_race']).apply(compute_outcome_stats).unstack()
 fig, axes = plt.subplots(nrows=1, ncols=2, figsize=figsize)
@@ -1000,7 +1008,7 @@ race_stats.plot.bar(y='citations_per_warning', ax=axes[1], title='Citations Per 
 
 ![citations and arrests by race and violation](https://cdn.patricktriest.com/blog/images/posts/policing-data/citations_and_arrests_by_race_and_violation.png)
 
-We can see in this chart that Black drivers are more likely, across the board, to be issued a citation than white drivers, and Hispanic and Black drivers are generally arrested at a higher rate than white drivers (with the exception of the rather mysterious "other" category).  Asian drivers are arrested at very low rates, and their citation rates are truly all over the place.
+We can see in this chart that Black drivers are more likely, across the board, to be issued a citation than white drivers, and Hispanic and Black drivers are generally arrested at a higher rate than white drivers (with the exception of the rather ambiguous "other" category).  Asian drivers are arrested at very low rates, and their citation rates are all over the place.
 
 These results are compelling, and are suggestive of potential racial bias, but they are too inconsistent across violation types to provide any definitive answers.  Let's dig deeper to see what else we can find.
 
@@ -1026,7 +1034,7 @@ We'll now use the available data to perform our own outcome test, in order to de
 
 We'll define a new function to compute the search rate and hit rate for the traffic stops in our dataframe.
 
-- **Search Rate** - The rate at which a traffic stop results in a search.  A search rate of `0.20` would signify that out of 100 traffic stops, 20 resulted in a search on average.
+- **Search Rate** - The rate at which a traffic stop results in a search.  A search rate of `0.20` would signify that out of 100 traffic stops, 20 resulted in a search.
 - **Hit Rate** - The rate at which contraband is found in a search. A hit rate of `0.80` would signify that out of 100 searches, 80 searches resulted in contraband (drugs, unregistered weapons, etc.) being found.
 
 ```python
@@ -1125,7 +1133,7 @@ df_vt.groupby('driver_gender').apply(compute_search_stats)
   </tbody>
 </table>
 
-We can see here that men are three times as likely to be searched as women, and 80% of searches for both genders resulted in contraband being found.  The data shows that men are searched and caught with contraband more often than women, but it is unclear whether there is any gender discrimination in deciding who to search since the hit rate is equal.
+We can see here that men are three times as likely to be searched as women, and that 80% of searches for both genders resulted in contraband being found.  The data shows that men are searched and caught with contraband more often than women, but it is unclear whether there is any gender discrimination in deciding who to search since the hit rate is equal.
 
 #### 3.3 - Compare Search Stats By Age
 
@@ -1308,9 +1316,9 @@ Black and Hispanic drivers are searched at much higher rates than White drivers 
 
 Let's rephrase these results.
 
-**Black drivers are *500% more likely* to be searched than white drivers during a traffic stop, but are *13% less likely* to be caught with contraband in the event of a search.**
+*Black drivers are **500% more likely** to be searched than white drivers during a traffic stop, but are **13% less likely** to be caught with contraband in the event of a search.*
 
-**Hispanic drivers are *400% more likely* to be searched than white drivers during a traffic stop, but are *17% less likely* to be caught with contraband in the event of a search.**
+*Hispanic drivers are **400% more likely** to be searched than white drivers during a traffic stop, but are **17% less likely** to be caught with contraband in the event of a search.*
 
 #### 3.5 - Compare Search Stats By Race and Location
 
@@ -1362,7 +1370,7 @@ generate_comparison_scatters(df_vt, 'VT')
 
 ![search scatters vt](https://cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_VT.png)
 
-The plots above are comparing `search_rate` (left) and `hit_rate` (right) for minority drivers compared with white drivers in each county.  If all of the dots (each of which represents the stats for a single county) followed the diagonal center line, the implication would be that white drivers and non-white drivers are searched at the exact same rate with the exact same standard of evidence.
+The plots above are comparing `search_rate` (left) and `hit_rate` (right) for minority drivers compared with white drivers in each county.  If all of the dots (each of which represents the stats for a single county and race) followed the diagonal center line, the implication would be that white drivers and non-white drivers are searched at the exact same rate with the exact same standard of evidence.
 
 Unfortunately, this is not the case.  In the above charts, we can see that, for every single county, the search rate is higher for Black and Hispanic drivers even though the hit rate is lower.
 
@@ -1390,8 +1398,7 @@ generate_county_search_stats_scatter(df_vt, "VT")
 
 ![county scatters vt](https://cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_VT.png)
 
-As the old idiom goes - "A picture is worth a thousand words".
-The above chart is one of those pictures - and the name of the picture is "Systemic Racism".
+As the old idiom goes - *a picture is worth a thousand words*.  The above chart is one of those pictures - and the name of the picture is "Systemic Racism".
 
 The search rates and hit rates for white drivers in most counties are consistently clustered around 80% and 1% respectively.  We can see, however, that nearly every county searches Black and Hispanic drivers at a higher rate, and that these searches uniformly have a lower hit rate than those on White drivers.
 
@@ -1429,7 +1436,7 @@ def analyze_state_data(state):
     return df.groupby('driver_race').apply(compute_search_stats)
 ```
 
-We're making a few optimizations here in order to make the analysis a bit more streamlined and computationally efficient.  By only reading the four columns that we're interested in, and by specifying the datatypes ahead of time, we'll be able to read much larger datasets into memory more quickly.
+We're making a few optimizations here in order to make the analysis a bit more streamlined and computationally efficient.  By only reading the four columns that we're interested in, and by specifying the datatypes ahead of time, we'll be able to read larger datasets into memory more quickly.
 
 ```python
 analyze_state_data('MA')
@@ -1499,20 +1506,18 @@ We can see here again that Black and Hispanic drivers are searched at significan
 
 If we compare the stats for MA to VT, we'll also notice that police in MA seem to use a much lower standard of evidence when searching a vehicle, with their searches averaging around a 50% hit rate, compared to 80% in VT.
 
-The trend here is much less obvious than in Vermont, but it is still clear that traffic stops of Black and Hispanic drivers are more likely to result in a search, while the hit rates are generally lower for Black and Hispanic drivers than they are for White drivers.
+The trend here is much less obvious than in Vermont, but it is still clear that traffic stops of Black and Hispanic drivers are more likely to result in a search, despite the fact the searches of White drivers are more likely to result in contraband being found.
 
 #### 4.1 - Wisconsin & Connecticut
 
-Wisconsin and Connecticut have been named as some of the [worst states in America for racial disparities](https://www.wpr.org/wisconsin-considered-one-worst-states-racial-disparities).
-
-Let's see how their police stats stack up.
+Wisconsin and Connecticut have been named as some of the [worst states in America for racial disparities](https://www.wpr.org/wisconsin-considered-one-worst-states-racial-disparities).  Let's see how their police stats stack up.
 
 Again, you'll need to download the Wisconsin and Connecticut dataset to your project's `/data` directory.
 
 - Wisconsin: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
 - Connecticut: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
 
-We can call our `analyze_state_data` function for Wisconsin (WI), once the dataset has been downloaded.
+We can call our `analyze_state_data` function for Wisconsin once the dataset has been downloaded.
 ```python
 analyze_state_data('WI')
 ```
@@ -1572,7 +1577,7 @@ analyze_state_data('WI')
   </tbody>
 </table>
 
-The trends here are starting to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at the same rate as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely to yield contraband than searches on white drivers.
+The trends here are starting to look familiar.  White drivers in Wisconsin are much less likely to be searched than non-white drivers (aside from Asians, who tend to be searched at around the same rates as whites).  Despite the much higher search rates, searches of non-white drivers are, again, actually less likely to yield contraband than searches on white drivers.
 
 ![search scatters WI](https://cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_WI.png)
 ![county scatters WI](https://cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_WI.png)
@@ -1647,7 +1652,7 @@ Again, the pattern persists.
 
 #### 4.2 - Arizona
 
-Now that we have a reusable function declared, we can generate each result rather quickly for each state (with available data), once we've downloaded each dataset.
+We can generate each result rather quickly for each state (with available data), once we've downloaded each dataset.
 
 ```python
 analyze_state_data('AZ')
@@ -1973,7 +1978,7 @@ analyze_state_data('TX')
 
 #### 4.7 - Even more data visualizations
 
-I highly recommend that you visit the [Standford Open Policing Project results page](https://openpolicing.stanford.edu/findings/) for more visualizations of this data.  Here you can easily browse the search outcome results for all available states, and explore additional analysis that the researchers have performed such as stop rate by race (using county population demographics data) as well as the effects of recreational marijuana legalization on search rates.
+I highly recommend that you visit the [Standford Open Policing Project results page](https://openpolicing.stanford.edu/findings/) for more visualizations of this data.  Here you can browse the search outcome results for all available states, and explore additional analysis that the researchers have performed such as stop rate by race (using county population demographics data) as well as the effects of recreational marijuana legalization on search rates.
 
 ## 5 - What next?
 
@@ -1981,7 +1986,9 @@ Do these results imply that all police officers are overtly racist?  **No.**
 
 Do they show that Black and Hispanic drivers are searched much more frequently than white drivers, often with a lower standard of evidence?  **Yes.**
 
-What we are observing here appears to be a pattern of systemic racism.  The racial disparities revealed in this analysis are a reflection of entrenched biases against certain minorities in the United States.  The data and accompanying analysis are indicative of social trends that are certainly not limited to police officers, and should not be used to disparage this profession as a whole.  Racial discrimination is present at all levels of society from [retail stores](https://www.theguardian.com/us-news/2015/jun/22/zara-reports-culture-of-favoritism-based-on-race) to the [tech industry](https://www.wired.com/story/tech-leadership-race-problem/).
+What we are observing here appears to be a pattern of systemic racism.  The racial disparities revealed in this analysis are a reflection of an entrenched cultural bias against certain minorities in the United States.  The data and accompanying analysis are indicative of social trends that are certainly not limited to police officers, and *should not be used to disparage this profession as a whole*.  Racial discrimination is present at all levels of society from [retail stores](https://www.theguardian.com/us-news/2015/jun/22/zara-reports-culture-of-favoritism-based-on-race) to the [tech industry](https://www.wired.com/story/tech-leadership-race-problem/) to [academia](https://www.scientificamerican.com/article/sex-and-race-discrimination-in-academia-starts-even-before-grad-school/).
+
+We are able to empirically identify these trends only because state police deparments (and the Open Policing team at Stanford) have made this data available to the public; no such datasets exist for many other professions and industries.  Releasing datasets about these issues is commendable (but sadly still somewhat uncommon, especially in the private sector) and will help to further identify where these disparities exist, and to influence policies in order to provide a fair, effective way to counteract these biases.
 
 To see the full official analysis for all 20 available states, check out the official findings paper here - https://5harad.com/papers/traffic-stops.pdf.
 
@@ -1995,6 +2002,8 @@ I hope that this tutorial has provided the tools you might need to take this ana
 
 The source code and figures for this analysis can be found in the companion Github repository - https://github.com/triestpa/Police-Analysis-Python
 
-The code for this project is 100% open source ([MIT license](https://en.wikipedia.org/wiki/MIT_License)), so feel free to use it however you see fit in your own projects.
+To view the completed IPython notebook, visit the page [here](https://github.com/triestpa/Police-Analysis-Python/blob/master/traffic_stop_analysis.ipynb).
+
+The code for this project is 100% open source ([MIT license](https://github.com/triestpa/Police-Analysis-Python/blob/master/LICENSE)), so feel free to use it however you see fit in your own projects.
 
 As always, please feel free to comment below with any questions, comments, or criticisms.
