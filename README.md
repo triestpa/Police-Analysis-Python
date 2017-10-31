@@ -1586,7 +1586,7 @@ The trends here are starting to look familiar.  White drivers in Wisconsin are m
 ![search scatters WI](https://cdn.patricktriest.com/blog/images/posts/policing-data/search_scatters_WI.png)
 ![county scatters WI](https://cdn.patricktriest.com/blog/images/posts/policing-data/county_scatter_WI.png)
 
-Starting to look familiar?  We can see here, yet again, that the standard of evidence for searching Black and Hispanic drivers is higher in virtually every county than for White drivers.  In one outlying county, almost 25% (!) of traffic stops for Black drivers resulted in a search, even though only half of those searches yielded contraband.
+We can see here, yet again, that the standard of evidence for searching Black and Hispanic drivers is lower in virtually every county than for White drivers.  In one outlying county, almost 25% (!) of traffic stops for Black drivers resulted in a search, even though only half of those searches yielded contraband.
 
 Let's do the same analysis for Connecticut
 
