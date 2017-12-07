@@ -2,7 +2,7 @@
 
 The intersection of science, politics, personal opinion, and social policy can be rather complex.  This junction of ideas and disciplines is often rife with controversies, strongly held viewpoints, and agendas that are often [more based on belief than on empirical evidence](https://en.wikipedia.org/wiki/Global_warming_controversy).  Data science is particularly important in this area since it provides a methodology for examining the world in a pragmatic fact-first manner, and is capable of providing insight into some of the most important issues that we face today.
 
-The recent high-profile police shootings of unarmed black men, such as [Michael Brown](https://en.wikipedia.org/wiki/Shooting_of_Michael_Brown) (2104), [Tamir Rice](https://en.wikipedia.org/wiki/Shooting_of_Tamir_Rice) (2014), [Anton Sterling](https://en.wikipedia.org/wiki/Shooting_of_Alton_Sterling) (2016), and [Philando Castile](https://en.wikipedia.org/wiki/Shooting_of_Philando_Castile) (2016), have triggered a divisive national dialog on the issue of racial bias in policing.
+The recent high-profile police shootings of unarmed black men, such as [Michael Brown](https://en.wikipedia.org/wiki/Shooting_of_Michael_Brown) (2014), [Tamir Rice](https://en.wikipedia.org/wiki/Shooting_of_Tamir_Rice) (2014), [Anton Sterling](https://en.wikipedia.org/wiki/Shooting_of_Alton_Sterling) (2016), and [Philando Castile](https://en.wikipedia.org/wiki/Shooting_of_Philando_Castile) (2016), have triggered a divisive national dialog on the issue of racial bias in policing.
 
 These shootings have spurred the growth of large social movements seeking to raise awareness of what is viewed as the systemic targeting of people-of-color by police forces across the country.  On the other side of the political spectrum, many hold a view that the unbalanced targeting of non-white citizens is a myth created by the media based on a handful of extreme cases, and that these highly-publicized stories are not representative of the national norm.
 
@@ -354,6 +354,8 @@ df_vt.dropna(inplace=True)
 df_vt.count()
 ```
 
+<br>
+
 When we count the values again, we'll see that each column has the exact same number of entries.
 
 ```text
@@ -435,7 +437,7 @@ Name: violation, dtype: int64
 
 Unsurprisingly, the top reason for a traffic stop is `Moving Violation` (speeding, reckless driving, etc.), followed by `Equipment` (faulty lights, illegal modifications, etc.).
 
-By using the `violation_raw` fields as reference, we can see that the `Other` category includes "Investigatory stop" (the police have reason to suspect that the driver of the vehicle has committed a crime) and  "Externally Generated Stop" (possibly as a result of a 911 call, or a referral from municipal police departments).
+By using the `violation_raw` fields as reference, we can see that the `Other` category includes "Investigatory Stop" (the police have reason to suspect that the driver of the vehicle has committed a crime) and  "Externally Generated Stop" (possibly as a result of a 911 call, or a referral from municipal police departments).
 
 `DUI` ("driving under the influence", i.e. drunk driving) is surprisingly the least prevalent, with only 711 total recorded stops for this reason over the five year period (2010-2015) that the dataset covers.  This seems low, since [Vermont had 2,647 DUI arrests in 2015](http://www.statisticbrain.com/number-of-dui-arrests-per-state/), so I suspect that a large proportion of these arrests were performed by municipal police departments, and/or began with a `Moving Violation` stop, instead of a more specific `DUI` stop.
 
@@ -473,7 +475,7 @@ F    101895
 Name: driver_gender, dtype: int64
 ```
 
-We can see that approximately 30% of the stops are of women drivers, and 70% are of men.
+We can see that approximately 36% of the stops are of women drivers, and 64% are of men.
 
 #### 1.6 - Stops By Race
 
@@ -562,11 +564,11 @@ n_warnings               166363.000000
 dtype: float64
 ```
 
-In the above result, we can see that about `1.17%` of traffic stops result in an arrest, and there are on-average `0.62` citations (tickets) issued per warning.  This data passes the sanity check, but it's too coarse to provide any terribly interesting insights.  Let's dig deeper.
+In the above result, we can see that about `1.17%` of traffic stops result in an arrest, and there are on-average `0.62` citations (tickets) issued per warning.  This data passes the sanity check, but it's too coarse to provide many interesting insights.  Let's dig deeper.
 
 #### 2.1 - Breakdown By Gender
 
-Using our helper function, along with Panda's [groupby](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html) method, we can easily compare these stats for male and female drivers.
+Using our helper function, along with the Pandas dataframe [groupby](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html) method, we can easily compare these stats for male and female drivers.
 
 ```python
 df_vt.groupby('driver_gender').apply(compute_outcome_stats)
@@ -893,7 +895,7 @@ df_vt.groupby(['driver_race','violation']).apply(compute_outcome_stats)
   </tbody>
 </table>
 
-Ok, well this table looks interesting, but it's rather large and visually overwhelming.  Let's trim down that dataset in order to just retrieve the most important information.
+Ok, well this table looks interesting, but it's rather large and visually overwhelming.  Let's trim down that dataset in order to retrieve a more focused subset of information.
 
 ```python
 # Create new column to represent whether the driver is white
@@ -910,7 +912,7 @@ We're generating a new column to represent whether or not the driver is white.  
 Let's redo our race + violation aggregation now, using our filtered dataset.
 
 ```python
-df_vt_filtered.groupby(['is_white','violation']).apply(compute_outcome_stats).to_html().replace('\n','')
+df_vt_filtered.groupby(['is_white','violation']).apply(compute_outcome_stats)
 ```
 
 <table border="0" class="dataframe">
@@ -998,7 +1000,7 @@ df_vt_filtered.groupby(['is_white','violation']).apply(compute_outcome_stats).to
 
 Ok great, this is much easier to read.
 
-In the above table, we can see that non-white drivers are more likely to be arrested during a stop that was initiated due to an equipment or moving violation, but white drivers are more likely to be arrested for a traffic stop resulting from "other" reason.  Non-white drivers are more likely than white drivers to be given tickets for each violation.
+In the above table, we can see that non-white drivers are more likely to be arrested during a stop that was initiated due to an equipment or moving violation, but white drivers are more likely to be arrested for a traffic stop resulting from "Other" reasons.  Non-white drivers are more likely than white drivers to be given tickets for each violation.
 
 #### 2.4 - Visualize Stop Outcome and Violation Results
 
@@ -1050,11 +1052,13 @@ def compute_search_stats(df):
     n_searches  = sum(search_conducted)
     n_hits      = sum(contraband_found)
 
+    # Filter out counties with too few stops
     if (n_stops) < 50:
         search_rate = None
     else:
         search_rate = n_searches / n_stops
 
+    # Filter out counties with too few searches
     if (n_searches) < 5:
         hit_rate = None
     else:
@@ -1986,7 +1990,7 @@ I highly recommend that you visit the [Standford Open Policing Project results p
 
 ## 5 - What next?
 
-Do these results imply that all police officers are overtly racist?  **No.**
+Do these results imply that police officers are overtly racist?  **No.**
 
 Do they show that Black and Hispanic drivers are searched much more frequently than white drivers, often with a lower standard of evidence?  **Yes.**
 
