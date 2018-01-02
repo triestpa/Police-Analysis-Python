@@ -1523,7 +1523,7 @@ Wisconsin and Connecticut have been named as some of the [worst states in Americ
 Again, you'll need to download the Wisconsin and Connecticut dataset to your project's `/data` directory.
 
 - Wisconsin: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
-- Connecticut: https://stacks.stanford.edu/file/druid:py883nd2578/WI-clean.csv.gz
+- Connecticut: https://stacks.stanford.edu/file/druid:py883nd2578/CT-clean.csv.gz
 
 We can call our `analyze_state_data` function for Wisconsin once the dataset has been downloaded.
 ```python
